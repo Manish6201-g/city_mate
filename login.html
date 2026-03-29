@@ -48,8 +48,8 @@
             <h2><i class="fas fa-sign-in-alt"></i> City Mate Login</h2>
             
             <div class="role-selector" style="display:flex;">
-                <button class="role-btn role-client active" onclick="selectRole('client')">Client</button>
-                <button class="role-btn role-admin" onclick="selectRole('admin')">Admin</button>
+                <button class="role-btn role-client active" onclick="selectRole('client', this)">Client</button>
+                <button class="role-btn role-admin" onclick="selectRole('admin', this)">Admin</button>
             </div>
             
             <form id="loginForm">
@@ -74,14 +74,18 @@
     <script>
         let currentRole = 'client';
         
-        function selectRole(role) {
+        function selectRole(role, btn) {
             currentRole = role;
-            document.querySelectorAll('.role-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
+            document.querySelectorAll('.role-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
             
             document.getElementById('loginBtn').textContent = `Login as ${role.charAt(0).toUpperCase() + role.slice(1)}`;
             document.getElementById('passwordGroup').style.display = role === 'admin' ? 'block' : 'none';
-            if (role === 'client') document.getElementById('password').removeAttribute('required');
+            if (role === 'client') {
+                document.getElementById('password').removeAttribute('required');
+            } else {
+                document.getElementById('password').setAttribute('required', 'required');
+            }
         }
         
         document.getElementById('loginForm').addEventListener('submit', function(e) {

@@ -191,7 +191,7 @@ nav h1 { color: white; font-size: 2rem; margin-bottom: 0.5rem; }
 
 #hero h2 { font-size: 2.5rem; margin-bottom: 1rem; }
 
-section[id$="-search"], #budget-tool {
+section[id$="-search"], .search-section, #budget-tool {
     background: white;
     margin: 2rem;
     padding: 2rem;
@@ -199,7 +199,7 @@ section[id$="-search"], #budget-tool {
     box-shadow: 0 10px 30px rgba(0,0,0,0.3);
 }
 
-section[id$="-search"] input {
+section[id$="-search"] input, .search-section input {
     width: 100%;
     padding: 1.2rem 1.5rem;
     margin-bottom: 2rem;
@@ -212,7 +212,7 @@ section[id$="-search"] input {
     transition: all 0.3s;
 }
 
-section[id$="-search"] input:focus {
+section[id$="-search"] input:focus, .search-section input:focus {
     outline: none;
     box-shadow: 0 5px 25px rgba(79,172,254,0.4);
     transform: scale(1.02);
@@ -388,5 +388,31 @@ button:hover { background: #5a67d8; }
     .solution-grid { grid-template-columns: 1fr; padding: 1rem; }
     #budget-tool { margin: 1rem; padding: 1.5rem; }
     .modal-content { margin: 20% auto; width: 95%; padding: 1.5rem; }
+    .navbar ul { flex-wrap: wrap; gap: 0.5rem; justify-content: center; }
+    .navbar a { padding: 0.4rem 0.8rem; font-size: 0.9rem; }
+    .page-hero h2 { font-size: 2rem; }
+    .page-hero { padding: 3rem 1rem; }
+    .results-grid { grid-template-columns: 1fr; }
+    .search-section, section[id$="-search"] { margin: 1rem; padding: 1.5rem; }
+}
+
+.search-btn {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #4facfe;
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    margin-top: 0;
+}
+
+.book-btn {
+    display: inline-block;
+    text-decoration: none;
+    text-align: center;
 }
 

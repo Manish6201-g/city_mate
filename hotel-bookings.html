@@ -1,1 +1,67 @@
-<!DOCTYPE
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hotel Bookings - City Mate</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <h1><i class="fas fa-city"></i> City Mate</h1>
+            <ul>
+                <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="guides.html"><i class="fas fa-user-friends"></i> Guides</a></li>
+                <li><a href="stays.html"><i class="fas fa-bed"></i> Stays</a></li>
+                <li><a href="places.html"><i class="fas fa-map-marker-alt"></i> Places</a></li>
+                <li><a href="budget.html"><i class="fas fa-calculator"></i> Budget</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="page-hero">
+            <h2><i class="fas fa-bed"></i> My Hotel Bookings</h2>
+            <p>View and manage your stay bookings</p>
+        </section>
+
+        <section class="search-section" style="max-width: 900px; margin: 2rem auto;">
+            <div id="hotel-bookings-list" class="results-grid"></div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const allBookings = JSON.parse(localStorage.getItem('cityMateBookings') || '[]');
+            const hotelBookings = allBookings.filter(b => b.type === 'stay');
+            const list = document.getElementById('hotel-bookings-list');
+
+            if (hotelBookings.length === 0) {
+                list.innerHTML = '<p style="text-align:center; color:#666;">No hotel bookings yet. <a href="stays.html">Browse stays</a></p>';
+                return;
+            }
+
+            list.innerHTML = hotelBookings.map(b => {
+                const details = JSON.parse(b.itemDetails || '{}');
+                return `
+                    <div class="item">
+                        <h3>${details.name || 'Hotel Booking'}</h3>
+                        <span class="type">${details.city || ''}</span>
+                        <p><strong>Customer:</strong> ${b.customerName || 'N/A'}</p>
+                        <p><strong>Dates:</strong> ${b.dates || 'N/A'}</p>
+                        <p><strong>Guests:</strong> ${b.guests || 'N/A'}</p>
+                        <p><strong>Phone:</strong> ${b.phone || 'N/A'}</p>
+                        <p><strong>Price:</strong> ₹${details.price || 'N/A'}/night</p>
+                        <p><strong>Status:</strong> <span style="color: ${b.status === 'confirmed' || b.status === 'approved' ? '#10b981' : b.status === 'rejected' ? '#ef4444' : '#f59e0b'};">${(b.status || 'pending').toUpperCase()}</span></p>
+                        <small>Booked: ${b.timestamp || ''}</small>
+                    </div>
+                `;
+            }).join('');
+        });
+    </script>
+</body>
+</html>

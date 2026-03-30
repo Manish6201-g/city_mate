@@ -1,4 +1,4 @@
-// City Mate - Complete India Tourist Data + Booking System
+// City Mate - Complete India Tourist Data + Booking System | Theme Enabled
 
 let bookings = JSON.parse(localStorage.getItem('cityMateBookings') || '[]');
 
@@ -61,8 +61,38 @@ const places = [
   {id: 9, city: 'Goa', name: 'Baga Beach', image: '🏖️', details: 'Party beach, free'}
 ];
 
+// Theme functions
+function initTheme() {
+  const savedTheme = localStorage.getItem('cityMateTheme') || 'light';
+  document.documentElement.setAttribute('data-theme', savedTheme);
+  const toggle = document.querySelector('.theme-toggle i');
+  if (toggle) {
+    toggle.className = savedTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+  }
+}
+
+function toggleTheme() {
+  const current = document.documentElement.getAttribute('data-theme') || 'light';
+  const newTheme = current === 'light' ? 'dark' : 'light';
+  document.documentElement.setAttribute('data-theme', newTheme);
+  localStorage.setItem('cityMateTheme', newTheme);
+  const toggle = document.querySelector('.theme-toggle i');
+  if (toggle) {
+    toggle.className = newTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+  }
+  // Smooth transition
+  document.body.style.transition = 'all 0.3s ease';
+  setTimeout(() => document.body.style.transition = '', 300);
+}
+
+// Add toggle button if navbar exists
+
+
 // DOM ready
-document.addEventListener('DOMContentLoaded', initApp);
+document.addEventListener('DOMContentLoaded', () => {
+  initTheme();
+  initApp();
+});
 
 function initApp() {
   renderRecentBookings();
@@ -139,7 +169,7 @@ function filterStays() {
 }
 
 function filterPlaces() {
-  const query = document.getElementById('placesSearch').value.toLowerCase();
+  const query = document.getElementBy1('placesSearch').value.toLowerCase();
   const filtered = places.filter(p => 
     p.city.toLowerCase().includes(query) || 
     p.name.toLowerCase().includes(query)
@@ -210,13 +240,28 @@ function calculateBudget() {
   const breakdown = `
     Stay (₹500/night): ₹${500 * days}<br>
     Food: ₹${800 * days}<br>
-    Local Travel: ₹${300 * days}<br>
+    Local Travel: 
+₹${300 * days}<br>
     Misc: ₹500
   `;
   
+  document.getElementBy formatting: preserve exact indentation
   document.getElementById('total').textContent = `Total: ₹${Math.round(base)}`;
   document.getElementById('breakdown-details').innerHTML = breakdown;
 }
+
+let scrolled = false;
+
+window.addEventListener('scroll', () => {
+  const header = document.querySelector('.logo-header');
+  if (window.scrollY > 100 && !scrolled) {
+    header.classList.add('shrunk');
+    scrolled = true;
+  } else if (window.scrollY <= 100 && scrolled) {
+    header.classList.remove('shrunk');
+    scrolled = false;
+  }
+}, { passive: true });
 
 // Event Listeners
 if (document.getElementById('guideSearch')) document.getElementById('guideSearch').addEventListener('input', filterGuides);
@@ -232,10 +277,10 @@ window.onclick = function(event) {
 // Budget form
 if (document.getElementById('budgetForm')) {
   document.getElementById('budgetForm').addEventListener('submit', e => e.preventDefault());
-  document.querySelector('#budgetForm button')?.addEventListener('click', calculateBudget);
+  document.querySelector('#budgetForm button')?.addEventListener('click', calculateBudget());
 }
 
-// Admin nav toggle
+// Budget form
 function toggleAdminNav() {
   const adminLinks = document.querySelectorAll('#adminLink');
   const isLogged = localStorage.getItem('cityMateAdminLoggedIn') === 'true';
@@ -246,5 +291,3 @@ function toggleAdminNav() {
 
 // Call on load
 document.addEventListener('DOMContentLoaded', toggleAdminNav);
-
-

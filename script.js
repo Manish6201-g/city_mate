@@ -61,8 +61,38 @@ const places = [
   {id: 9, city: 'Goa', name: 'Baga Beach', image: '🏖️', details: 'Party beach, free'}
 ];
 
+// Theme functions
+function initTheme() {
+  const savedTheme = localStorage.getItem('cityMateTheme') || 'light';
+  document.documentElement.setAttribute('data-theme', savedTheme);
+  const toggle = document.querySelector('.theme-toggle i');
+  if (toggle) {
+    toggle.className = savedTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+  }
+}
+
+function toggleTheme() {
+  const current = document.documentElement.getAttribute('data-theme') || 'light';
+  const newTheme = current === 'light' ? 'dark' : 'light';
+  document.documentElement.setAttribute('data-theme', newTheme);
+  localStorage.setItem('cityMateTheme', newTheme);
+  const toggle = document.querySelector('.theme-toggle i');
+  if (toggle) {
+    toggle.className = newTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+  }
+  // Smooth transition
+  document.body.style.transition = 'all 0.3s ease';
+  setTimeout(() => document.body.style.transition = '', 300);
+}
+
+// Add toggle button if navbar exists
+
+
 // DOM ready
-document.addEventListener('DOMContentLoaded', initApp);
+document.addEventListener('DOMContentLoaded', () => {
+  initTheme();
+  initApp();
+});
 
 function renderPopular() {
   const popular = [...guides.slice(0,3), ...stays.slice(0,3)];

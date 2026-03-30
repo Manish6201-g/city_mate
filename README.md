@@ -1,32 +1,25 @@
-# City Mate - MVP Web Platform 🚀
+# City Mate 🏙️
 
-## Overview
-**Refocused MVP** (per feedback): Search affordable stays, verified guides, local places.
-- Matches pitch deck: Guides marketplace, Mate Rates hotels, local insights.
-- Vanilla HTML/CSS/JS - no build needed.
+## Your Local Travel Companion
 
-## How to Run
-```bash
-open index.html
-```
-Or drag `index.html` to browser.
+**Live:** https://jitu.github.io/city.mate
 
-## Features
-- **Live Search**: Filter guides/stays/places by city/name/price/expertise (mock data, e.g., 'delhi' or '1200').
-- **Quick Budget Estimate**: Secondary tool (city-adjusted).
-- **Responsive**: Mobile-first for travelers.
+### Features
+- **Animated Home** Full-page logo shrink on scroll
+- **Guides/Stays Booking** Pre-filled forms → localStorage → admin
+- **Admin Panel** Login `admin123`: Approve/Reject/Delete bookings
+- **Budget Calculator** City-based trip estimates
+- **Responsive** Mobile-first glassmorphism design
 
-## Test It
-- Guides: Type 'food' → Priya/Neha.
-- Stays: 'homestay' or '1500'.
-- Places: 'gate' → India Gate.
-- Budget: Delhi 3 days ~₹9,000+.
+### Local Run
+Open `index.html` in browser.
 
-## Next Steps
-- Phase 2: Real DB/guides onboarding.
-- APIs: Hotels/Transport.
-- Mobile App (Phase 4).
+### Files
+- `index.html` Home
+- `guides.html`/`stays.html` Listings + Book Now
+- `booking-form.html` Forms
+- `admin.html` Dashboard
+- `script.js` Data/logic
+- `styles.css` Glass UI
 
-Year 1: 40k users, ₹70L Q4 revenue.
-
-Built by BLACKBOXAI from pitch PDF.
+**Tech:** Pure HTML/CSS/JS + localStorage

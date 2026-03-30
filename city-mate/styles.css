@@ -1,4 +1,5 @@
-/* City Mate Styles - Responsive + Booking Modal */
+/* City Mate - Improved Sunset Travel Theme with Dark Mode */
+/* Synced from root styles.css - DEPRECATED styles-responsive.css */
 
 * {
     margin: 0;
@@ -6,14 +7,62 @@
     box-sizing: border-box;
 }
 
-body {
-    font-family: 'Poppins', sans-serif;
-    line-height: 1.6;
-    color: #333;
-    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-    min-height: 100vh;
+:root {
+    /* Color Palette - Sunset Travel Theme */
+    --color-bg-primary: linear-gradient(135deg, #f59e0b 0%, #7c3aed 50%, #06b6d4 100%);
+    --color-bg-secondary: linear-gradient(135deg, #fbbf24 0%, #a78bfa 100%);
+    --color-card: rgba(255, 255, 255, 0.92);
+    --color-text-primary: #1e293b;
+    --color-text-secondary: #475569;
+    --color-accent: #f59e0b;
+    --color-success: #10b981;
+    --color-danger: #ef4444;
+    --color-purple: #7c3aed;
+    
+    /* Glassmorphism */
+    --glass-bg: rgba(255, 255, 255, 0.25);
+    --glass-card: rgba(255, 255, 255, 0.92);
+    --glass-border: rgba(255, 255, 255, 0.3);
+    --backdrop-blur: blur(20px);
+    
+    /* Spacing & Typography - Fluid */
+    --spacing-xs: clamp(0.5rem, 2vw, 1rem);
+    --spacing-sm: clamp(1rem, 4vw, 2rem);
+    --spacing-md: clamp(2rem, 6vw, 4rem);
+    --spacing-lg: clamp(3rem, 8vw, 6rem);
+    --font-size-base: clamp(1rem, 2.5vw, 1.2rem);
+    --font-size-lg: clamp(1.5rem, 4vw, 2rem);
+    --font-size-xl: clamp(2.5rem, 7vw, 4rem);
+    --border-radius: 24px;
+    
+    /* Shadows */
+    --shadow-sm: 0 8px 32px rgba(0,0,0,0.1);
+    --shadow-md: 0 20px 60px rgba(0,0,0,0.15);
+    --shadow-lg: 0 30px 80px rgba(0,0,0,0.2);
 }
 
+[data-theme="dark"] {
+    --color-bg-primary: linear-gradient(135deg, #1e1b4b 0%, #3b82f6 50%, #06b6d4 100%);
+    --color-card: rgba(31, 41, 55, 0.95);
+    --color-text-primary: #f8fafc;
+    --color-text-secondary: #cbd5e1;
+    --glass-bg: rgba(255, 255, 255, 0.1);
+    --glass-card: rgba(31, 41, 55, 0.95);
+    --glass-border: rgba(255, 255, 255, 0.2);
+}
+
+body {
+    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+    line-height: 1.7;
+    color: var(--color-text-primary);
+    background: var(--color-bg-primary);
+    min-height: 100vh;
+    font-size: var(--font-size-base);
+    transition: background 0.3s ease, color 0.3s ease;
+    font-feature-settings: 'liga' 1, 'calt' 1;
+}
+
+/* Background texture */
 body::before {
     content: '';
     position: fixed;
@@ -21,296 +70,150 @@ body::before {
     left: 0;
     width: 100%;
     height: 100%;
-    background: url('data:image/svg+xml,<svg xmlns=\\"http://www.w3.org/2000/svg\\" viewBox=\\"0 0 100 100\\"><defs><pattern id=\\"grain\\" width=\\"100\\" height=\\"100\\" patternUnits=\\"userSpaceOnUse\\"><circle cx=\\"25\\" cy=\\"25\\" r=\\"1\\" fill=\\"%23ffffff\\" opacity=\\"0.1\\"/><circle cx=\\"75\\" cy=\\"75\\" r=\\"0.5\\" fill=\\"%23ffffff\\" opacity=\\"0.05\\"/></pattern></defs><rect width=\\"100\\" height=\\"100\\" fill=\\"url(%23grain)\\"/></svg>');
+    background: url('data:image/svg+xml,<svg xmlns=\\"http://www.w3.org/2000/svg\\" viewBox=\\"0 0 100 100\\"><defs><pattern id=\\"grain\\" width=\\"100\\" height=\\"100\\" patternUnits=\\"userSpaceOnUse\\"><circle cx=\\"25\\" cy=\\"25\\" r=\\"1\\" fill=\\"%"23ffffff\\" opacity=\\"0.08\\"/><circle cx=\\"75\\" cy=\\"75\\" r=\\"0.5\\" fill=\\"%"23ffffff\\" opacity=\\"0.04\\"/></pattern></defs><rect width=\\"100\\" height=\\"100\\" fill=\\"url(%23grain)\\"/></svg>');
     pointer-events: none;
     z-index: -1;
+    opacity: 0.6;
 }
 
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* Logo Header - Enhanced */
+.logo-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: var(--color-bg-secondary);
+    z-index: 999;
+    transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    pointer-events: none;
+}
+
+.logo-container {
+    text-align: center;
+    opacity: 1;
+    transition: all 0.6s ease;
+}
+
+.logo-header.shrunk {
+    height: 70px !important;
+    background: var(--glass-bg);
+    pointer-events: auto;
+    border-radius: 0 0 var(--border-radius) var(--border-radius);
+}
+
+.logo-header.shrunk .logo-container {
+    transform: scale(0.65);
+}
+
+.logo-container i {
+    font-size: clamp(5rem, 15vw, 9rem);
+    color: white;
+    margin-bottom: var(--spacing-md);
+    filter: drop-shadow(0 8px 24px rgba(0,0,0,0.4));
+    transition: all 0.4s ease;
+}
+
+.logo-container h1 {
+    font-size: clamp(3rem, 9vw, 5.5rem);
+    background: linear-gradient(45deg, white 0%, transparent 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    text-shadow: 0 8px 24px rgba(0,0,0,0.4);
+}
+
+/* Navbar - With theme toggle */
 .navbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: rgba(255,255,255,0.15);
-    padding: 1rem 2rem;
-    backdrop-filter: blur(20px);
+    background: var(--glass-bg);
+    backdrop-filter: var(--backdrop-blur);
+    border-bottom: 1px solid var(--glass-border);
+    padding: var(--spacing-sm) clamp(1.5rem, 5vw, 3rem);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    flex-wrap: wrap;
+    gap: var(--spacing-xs);
 }
 
-.navbar h1 { color: white; font-size: 1.8rem; }
+.navbar-title {
+    color: white;
+    font-size: clamp(1.4rem, 4vw, 1.9rem);
+    font-weight: 700;
+    margin: 0;
+    flex: 1;
+    text-align: center;
+}
 
-.navbar ul {
+.navbar-nav {
     display: flex;
     list-style: none;
-    gap: 2rem;
-}
-
-.navbar a {
-    color: white;
-    text-decoration: none;
-    padding: 0.5rem 1rem;
-    border-radius: 20px;
-    transition: background 0.3s;
-}
-
-.navbar a:hover, .navbar a.active { background: rgba(255,255,255,0.2); }
-
-.page-hero {
-    text-align: center;
-    padding: 6rem 2rem;
-    color: white;
-}
-
-.page-hero h2 { font-size: 3.5rem; margin-bottom: 1rem; text-shadow: 0 2px 10px rgba(0,0,0,0.3); }
-
-.page-hero p { font-size: 1.3rem; max-width: 600px; margin: 0 auto; }
-
-.hero-buttons {
-    margin-top: 2rem;
-    display: flex;
-    gap: 1rem;
-    justify-content: center;
+    gap: var(--spacing-xs);
+    margin: 0;
     flex-wrap: wrap;
+    justify-content: center;
+    flex: 2;
 }
 
-.btn {
-    background: linear-gradient(45deg, #667eea, #764ba2);
+.navbar-nav a {
     color: white;
-    padding: 1rem 2rem;
-    border: none;
-    border-radius: 30px;
     text-decoration: none;
-    font-weight: 600;
-    transition: transform 0.3s, box-shadow 0.3s;
-}
-
-.btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.3);
-}
-
-.card {
-    transition: transform 0.3s, box-shadow 0.3s;
-}
-
-.card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-}
-
-.total-display { font-size: 2.5rem; font-weight: 600; color: #28a745; margin-bottom: 1rem; }
-
-header {
-    background: rgba(255,255,255,0.1);
-    padding: 1rem;
-    text-align: center;
-    backdrop-filter: blur(10px);
-}
-
-nav h1 { color: white; font-size: 2rem; margin-bottom: 0.5rem; }
-
-#hero {
-    text-align: center;
-    padding: 4rem 2rem;
-    color: white;
-}
-
-#hero h2 { font-size: 2.5rem; margin-bottom: 1rem; }
-
-section[id$="-search"], #budget-tool {
-    background: white;
-    margin: 2rem;
-    padding: 2rem;
-    border-radius: 10px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-}
-
-section[id$="-search"] input {
-    width: 100%;
-    padding: 1.2rem 1.5rem;
-    margin-bottom: 2rem;
-    border: none;
-    border-radius: 50px;
-    font-size: 1.1rem;
-    background: rgba(255,255,255,0.9);
-    backdrop-filter: blur(10px);
-    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-    transition: all 0.3s;
-}
-
-section[id$="-search"] input:focus {
-    outline: none;
-    box-shadow: 0 5px 25px rgba(79,172,254,0.4);
-    transform: scale(1.02);
-}
-
-.results-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 1rem;
-    margin-top: 1rem;
-}
-
-.item {
-    background: rgba(255,255,255,0.95);
-    backdrop-filter: blur(10px);
-    padding: 1.5rem;
-    border-radius: 20px;
-    border: 1px solid rgba(255,255,255,0.2);
-    box-shadow: 0 8px 32px rgba(0,0,0,0.1);
-    transition: all 0.3s ease;
-}
-
-.item:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 15px 40px rgba(0,0,0,0.2);
-}
-
-.item i { color: #4facfe; margin-right: 0.5rem; }
-
-.type {
-    background: linear-gradient(45deg, #4facfe, #00f2fe);
-    color: white;
-    padding: 0.3rem 0.8rem;
-    border-radius: 15px;
-    font-size: 0.9rem;
+    padding: clamp(0.75rem, 2.5vw, 1rem) clamp(1rem, 4vw, 1.5rem);
+    border-radius: var(--border-radius);
     font-weight: 500;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    font-size: var(--font-size-base);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
 }
 
-#budget-tool label {
-    display: block;
-    margin: 1rem 0;
-}
-
-#budget-tool input, select { 
-    width: 100%; 
-    padding: 0.5rem; 
-    margin-top: 0.25rem; 
-    border: 1px solid #ddd;
-    border-radius: 5px;
-}
-
-button {
-    background: #667eea;
-    color: white;
-    padding: 1rem 2rem;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1.1rem;
-    margin-top: 1rem;
-}
-
-button:hover { background: #5a67d8; }
-
-#total {
-    font-size: 2rem;
-    font-weight: bold;
-    color: #667eea;
-    margin-top: 1rem;
-    text-align: center;
-}
-
-.solution-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
-    padding: 2rem;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-.card {
-    background: white;
-    padding: 2rem;
-    border-radius: 10px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-    text-align: center;
-}
-
-#contact {
-    text-align: center;
-    padding: 4rem 2rem;
-    color: white;
-}
-
-/* Booking Modal Styles */
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0,0,0,0.5);
-    backdrop-filter: blur(5px);
-}
-
-.modal-content {
-    background: white;
-    margin: 10% auto;
-    padding: 2rem;
-    border-radius: 20px;
-    width: 90%;
-    max-width: 500px;
-    position: relative;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
-}
-
-.close {
-    position: absolute;
-    right: 1.5rem;
-    top: 1.5rem;
-    color: #aaa;
-    font-size: 28px;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-.close:hover { color: #333; }
-
-.book-btn {
-    background: linear-gradient(45deg, #28a745, #20c997);
-    color: white;
-    border: none;
-    padding: 0.7rem 1.5rem;
-    border-radius: 25px;
-    cursor: pointer;
-    font-weight: 600;
-    margin-top: 0.5rem;
-    width: 100%;
-    transition: transform 0.3s;
-}
-
-.book-btn:hover {
+.navbar-nav a:hover, .navbar-nav a.active {
+    background: rgba(255,255,255,0.2);
     transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(40,167,69,0.4);
+    box-shadow: var(--shadow-sm);
 }
 
-#bookingForm label {
-    display: block;
-    margin: 1rem 0;
-    font-weight: 500;
-}
+.theme-toggle {
+    background: none;
+    border: 2px solid rgba(255,255,255,0.4);
+    color: white;
+    padding: 0.75rem;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: all 0.3s;
+    display: flex;
+    align-items: 
+   
+</xai:function_call name="create_file"> doesn't support partial content. The "COMPLETE file content" rule applies even for overwrite. To sync subdir, since list_files shows 13 files, and root has improved styles.css/script.js, copy root versions to city-mate/.
 
-#bookingForm input {
-    width: 100%;
-    padding: 0.8rem;
-    margin-top: 0.3rem;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    font-size: 1rem;
-}
+Step 8: Sync key files: city-mate/styles.css, city-mate/script.js, and update HTML icons if needed.
 
-#bookingForm input:focus {
-    outline: none;
-    border-color: #4facfe;
-    box-shadow: 0 0 0 3px rgba(79,172,254,0.1);
-}
+Since city-mate/index.html has old inline styles, edit it too.
 
-@media (max-width: 768px) {
-    #hero h2 { font-size: 1.8rem; }
-    .solution-grid { grid-template-columns: 1fr; padding: 1rem; }
-    #budget-tool { margin: 1rem; padding: 1.5rem; }
-    .modal-content { margin: 20% auto; width: 95%; padding: 1.5rem; }
-}
+Then mark complete, test, attempt_completion.
+</thinking>
 
+
+
+<xai:function_call name="create_file">
+<parameter name="absolute_path">/Users/jitu/Desktop/city-mate/city-mate/script.js

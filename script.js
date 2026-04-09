@@ -88,10 +88,16 @@ function toggleTheme() {
 // Add toggle button if navbar exists
 
 
-// DOM ready
+// Enhanced init with new features
 document.addEventListener('DOMContentLoaded', () => {
   initTheme();
   initApp();
+  initScrollAnimations();
+  initNavHighlight();
+  initFAQ();
+  initScrollToTop();
+  toggleUserNav();
+  toggleAdminNav();
 });
 
 function renderPopular() {
@@ -118,6 +124,7 @@ function initApp() {
   if (document.getElementById('places-list')) renderPlaces();
   if (document.getElementById('popular-grid')) renderPopular();
   if (document.getElementById('city') && document.getElementById('days')) calculateBudget(); // Initial
+  animateStats();
 }
 
 // Render functions
@@ -268,6 +275,7 @@ function calculateBudget() {
 
 let scrolled = false;
 
+// Enhanced scroll handler
 window.addEventListener('scroll', () => {
   const header = document.querySelector('.logo-header');
   if (window.scrollY > 100 && !scrolled) {
@@ -277,6 +285,7 @@ window.addEventListener('scroll', () => {
     header.classList.remove('shrunk');
     scrolled = false;
   }
+  updateScrollToTop();
 }, { passive: true });
 
 // Event Listeners
@@ -296,7 +305,25 @@ if (document.getElementById('budgetForm')) {
   document.querySelector('#budgetForm button')?.addEventListener('click', calculateBudget);
 }
 
-// Admin nav toggle
+// User nav toggle
+function toggleUserNav() {
+  const userLoginLink = document.getElementById('userLoginNav');
+  const userLogoutLink = document.getElementById('userLogoutNav');
+  const isUserLogged = localStorage.getItem('cityMateUserLoggedIn') === 'true';
+  
+  if (userLoginLink) userLoginLink.style.display = isUserLogged ? 'none' : 'block';
+  if (userLogoutLink) userLogoutLink.style.display = isUserLogged ? 'block' : 'none';
+}
+
+// User logout
+function userLogout() {
+  localStorage.removeItem('cityMateUserLoggedIn');
+  localStorage.removeItem('cityMateUserEmail');
+  toggleUserNav();
+  if (typeof initApp === 'function') initApp();
+}
+
+// Admin nav toggle (now consistent with login changes)
 function toggleAdminNav() {
   const adminLinks = document.querySelectorAll('#adminLink');
   const isLogged = localStorage.getItem('cityMateAdminLoggedIn') === 'true';
@@ -305,7 +332,98 @@ function toggleAdminNav() {
   });
 }
 
-// Call on load
-document.addEventListener('DOMContentLoaded', toggleAdminNav);
+// New feature functions
+function initScrollAnimations() {
+  // Simple scroll reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.opacity = '1';
+        entry.target.style.transform = 'translateY(0)';
+      }
+    });
+  });
+  
+  document.querySelectorAll('[data-aos]').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(50px)';
+    el.style.transition = 'all 0.6s cubic-bezier(0.34,1.56,0.64,1)';
+    observer.observe(el);
+  });
+}
+
+function initNavHighlight() {
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.navbar a[href^="#"]');
+  
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinks.forEach(link => link.classList.remove('active'));
+        const id = entry.target.getAttribute('id');
+        document.querySelector(`.navbar a[href*="${id}"]`)?.classList.add('active');
+      }
+    });
+  }, { threshold: 0.3 });
+  
+  sections.forEach(section => observer.observe(section));
+}
+
+function initFAQ() {
+  document.querySelectorAll('.faq-question').forEach(question => {
+    question.addEventListener('click', () => {
+      const item = question.parentElement;
+      item.classList.toggle('active');
+    });
+  });
+}
+
+function initScrollToTop() {
+  const btn = document.getElementById('scrollToTop');
+  if (!btn) return;
+  
+  btn.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+}
+
+function updateScrollToTop() {
+  const btn = document.getElementById('scrollToTop');
+  if (window.scrollY > 300) {
+    btn.classList.add('visible');
+  } else {
+    btn.classList.remove('visible');
+  }
+}
+
+function animateStats() {
+  const stats = document.querySelectorAll('.hero-stats strong');
+  stats.forEach(stat => {
+    const target = parseInt(stat.textContent.replace('+', ''));
+    let count = 0;
+    const increment = target / 100;
+    const timer = setInterval(() => {
+      count += increment;
+      if (count >= target) {
+        stat.textContent = target + '+';
+        clearInterval(timer);
+      } else {
+        stat.textContent = Math.floor(count) + '+';
+      }
+    }, 20);
+  });
+}
+
+// Contact form submit
+document.addEventListener('DOMContentLoaded', () => {
+  const contactForm = document.querySelector('.contact-form form');
+  if (contactForm) {
+    contactForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      alert('Thank you! We\'ll get back within 2 hours.');
+      contactForm.reset();
+    });
+  }
+});
 
 

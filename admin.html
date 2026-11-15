@@ -38,7 +38,16 @@
     <!-- Main Content -->
     <main class="admin-main">
       <div class="admin-topbar">
-        <h1 id="page-title">Dashboard Overview</h1>
+        <div>
+          <h1 id="page-title">Dashboard Overview</h1>
+          <div id="backend-status-indicator" style="display:flex;align-items:center;gap:0.5rem;font-size:0.8rem;color:var(--text-secondary);margin-top:0.25rem;">
+            <span id="api-status-dot" style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#eab308;"></span>
+            <span id="api-status-text">Backend: Connecting...</span>
+            <span style="color:var(--border);">|</span>
+            <span style="font-family:monospace;font-size:0.75rem;" id="api-endpoint-display"></span>
+            <button type="button" onclick="configureApiUrl()" style="padding:2px 8px;font-size:0.72rem;background:var(--bg-glass);border:1px solid var(--border);border-radius:4px;color:var(--accent);cursor:pointer;margin-left:0.3rem;"><i class="fas fa-sliders-h"></i> Change API</button>
+          </div>
+        </div>
         <button class="admin-logout" onclick="logout()">
           <i class="fas fa-sign-out-alt"></i> Logout
         </button>
@@ -155,6 +164,7 @@
 
   <script type="module">
     import {
+      API_BASE_URL,
       getStats, getBookings, updateBooking, deleteBooking,
       getAdminReviews, deleteReview, getContacts, toggleContact
     } from './api.js';
@@ -163,6 +173,45 @@
     if (!localStorage.getItem('cm_token')) {
       window.location.href = 'login.html';
     }
+
+    // Backend endpoint display & status helper
+    const endpointEl = document.getElementById('api-endpoint-display');
+    if (endpointEl) endpointEl.textContent = API_BASE_URL;
+
+    function setApiStatus(state, msg) {
+      const dot = document.getElementById('api-status-dot');
+      const text = document.getElementById('api-status-text');
+      if (!dot || !text) return;
+      if (state === 'connected') {
+        dot.style.background = '#22c55e';
+        text.textContent = 'Backend: Connected';
+        text.style.color = 'var(--text-secondary)';
+      } else if (state === 'connecting') {
+        dot.style.background = '#eab308';
+        text.textContent = msg || 'Backend: Connecting...';
+        text.style.color = '#eab308';
+      } else {
+        dot.style.background = '#ef4444';
+        text.textContent = msg || 'Backend: Offline';
+        text.style.color = '#ef4444';
+      }
+    }
+
+    window.configureApiUrl = function() {
+      const current = localStorage.getItem('cm_api_url') || API_BASE_URL;
+      const input = prompt(
+        'Configure Backend API URL:\n(Leave empty to reset to default Render URL)',
+        current
+      );
+      if (input === null) return;
+      const trimmed = input.trim().replace(/\/+$/, '');
+      if (trimmed) {
+        localStorage.setItem('cm_api_url', trimmed);
+      } else {
+        localStorage.removeItem('cm_api_url');
+      }
+      window.location.reload();
+    };
 
     let allBookings = [];
     let currentFilter = 'all';
@@ -190,6 +239,7 @@
     async function loadStats() {
       try {
         const res = await getStats();
+        setApiStatus('connected');
         const d = res.data;
         document.getElementById('stat-total').textContent = d.totalBookings;
         document.getElementById('stat-pending').textContent = d.pendingBookings;
@@ -203,21 +253,35 @@
         document.getElementById('stat-reviews').textContent = d.totalReviews;
         document.getElementById('stat-contacts').textContent = d.totalContacts;
       } catch (err) {
-        showToast('Failed to load stats', 'error');
+        setApiStatus('error', 'Backend: Connection failed');
+        showToast('Failed to load stats: ' + err.message, 'error');
       }
     }
 
-    async function loadBookings() {
+    window.loadBookings = async function loadBookings() {
       const tbody = document.getElementById('bookings-tbody');
-      tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;"><span class="spinner"></span></td></tr>';
+      tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:2rem;"><span class="spinner"></span><div style="margin-top:0.5rem;font-size:0.85rem;color:var(--text-secondary);">Contacting backend...</div></td></tr>';
       try {
         const res = await getBookings();
+        setApiStatus('connected');
         allBookings = res.data || [];
         renderBookings();
       } catch (err) {
-        tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;color:var(--error);">${err.message}</td></tr>`;
+        setApiStatus('error', 'Backend: Unreachable');
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="7" style="text-align:center;padding:2rem;">
+              <div style="color:var(--error);font-weight:600;margin-bottom:0.5rem;"><i class="fas fa-exclamation-triangle"></i> Failed to load bookings</div>
+              <div style="color:var(--text-secondary);font-size:0.85rem;max-width:550px;margin:0 auto 1rem auto;line-height:1.5;">${err.message}</div>
+              <div style="display:flex;gap:0.5rem;justify-content:center;flex-wrap:wrap;">
+                <button class="btn btn-sm btn-primary" onclick="loadBookings()"><i class="fas fa-redo"></i> Retry</button>
+                <button class="btn btn-sm btn-outline" onclick="configureApiUrl()"><i class="fas fa-sliders-h"></i> Change API URL</button>
+              </div>
+            </td>
+          </tr>
+        `;
       }
-    }
+    };
 
     window.filterBookings = function(status) {
       currentFilter = status;
@@ -428,8 +492,14 @@
           <span class="badge badge-${b.status}">${b.status}</span>
         </div>
       `).join('');
-    }).catch(() => {
-      document.getElementById('overview-bookings').innerHTML = '<p style="color:var(--error);">Failed to load bookings</p>';
+    }).catch((err) => {
+      document.getElementById('overview-bookings').innerHTML = `
+        <div style="color:var(--error);padding:1rem 0;">
+          <i class="fas fa-exclamation-triangle"></i> Cannot connect to backend (<code>${API_BASE_URL}</code>).
+          <div style="color:var(--text-secondary);font-size:0.85rem;margin:0.4rem 0 0.8rem 0;">${err.message || 'Server timeout'}</div>
+          <button class="btn btn-sm btn-outline" onclick="location.reload()"><i class="fas fa-redo"></i> Retry</button>
+        </div>
+      `;
     });
   </script>
   <script src="script.js"></script>

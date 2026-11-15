@@ -59,7 +59,13 @@
         showToast('Login successful! Redirecting...', 'success');
         setTimeout(() => window.location.href = 'admin.html', 800);
       } catch (err) {
-        showToast(err.message === 'Invalid credentials' ? 'Invalid email or password' : err.message, 'error');
+        let msg = err.message;
+        if (msg.includes('buffering timed out') || msg.includes('Database is not connected')) {
+          msg = 'Database connection failed. Please ensure 0.0.0.0/0 is allowed in MongoDB Atlas Network Access and MONGODB_URI is set in Render.';
+        } else if (msg === 'Invalid credentials') {
+          msg = 'Invalid email or password';
+        }
+        showToast(msg, 'error');
       } finally {
         setLoading(btn, false);
       }

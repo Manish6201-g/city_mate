@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Curated Tour Packages — CityMate</title>
+  <meta name="description" content="All-inclusive India travel packages. Expert local guides, handpicked boutique stays, private transfers, and signature food walks in one seamless bundle.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo"><i class="fas fa-compass"></i> CityMate</a>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="services.html">Services</a>
+        <a href="guides.html">Guides</a>
+        <a href="stays.html">Stays</a>
+        <a href="packages.html" class="active">Packages</a>
+        <a href="bulk-booking.html">Bulk Booking</a>
+        <a href="reviews.html">Reviews</a>
+        <a href="contact.html">Contact</a>
+        <a href="booking-form.html" class="nav-book-btn">Book Now</a>
+        <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme"><i class="fas fa-moon"></i></button>
+      </div>
+      <div class="hamburger" onclick="document.querySelector('.mobile-menu').classList.toggle('open')"><span></span><span></span><span></span></div>
+    </div>
+  </nav>
+
+  <div class="mobile-menu">
+    <a href="index.html">Home</a>
+    <a href="services.html">Services</a>
+    <a href="guides.html">Guides</a>
+    <a href="stays.html">Stays</a>
+    <a href="packages.html" class="active">Packages</a>
+    <a href="bulk-booking.html">Bulk Booking</a>
+    <a href="reviews.html">Reviews</a>
+    <a href="contact.html">Contact</a>
+    <a href="booking-form.html" class="nav-book-btn" style="display:inline-block;margin-top:0.5rem;">Book Now</a>
+  </div>
+
+  <!-- Header -->
+  <section style="padding: 120px 2rem 30px; max-width: var(--max-width); margin: 0 auto; text-align: center;">
+    <div style="display: inline-flex; align-items: center; gap: 0.5rem; background: var(--accent-soft); color: var(--accent); padding: 0.4rem 1rem; border-radius: 999px; font-size: 0.85rem; font-weight: 600; margin-bottom: 1.25rem;">
+      <i class="fas fa-suitcase-rolling"></i> All-Inclusive Bundles
+    </div>
+    <h1 style="font-size: 2.5rem; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 0.75rem;">
+      Curated Tour <span style="color: var(--accent);">Packages</span>
+    </h1>
+    <p style="max-width: 640px; margin: 0 auto 2rem; color: var(--text-secondary); font-size: 1.05rem; line-height: 1.6;">
+      Handpicked stays, certified local guides, monument passes, and transport bundled into one simple price. Zero stress, authentic local immersion.
+    </p>
+
+    <!-- Search Bar -->
+    <div style="max-width: 520px; margin: 0 auto 1.5rem;">
+      <div class="form-group" style="margin-bottom: 0;">
+        <div class="input-wrapper">
+          <i class="fas fa-search input-icon"></i>
+          <input type="text" id="packageSearch" placeholder="Search by city, circuit, or theme (e.g. Goa, Taj Mahal, Heritage)..." oninput="filterPackages()" style="padding-left: 2.75rem;">
+        </div>
+      </div>
+    </div>
+
+    <!-- Category Filter Pills -->
+    <div class="cat-pills-bar" style="justify-content: center;">
+      <button class="cat-pill active" onclick="selectPackageCategory('all', this)">All Packages</button>
+      <button class="cat-pill" onclick="selectPackageCategory('heritage', this)">🏰 Heritage & Palaces</button>
+      <button class="cat-pill" onclick="selectPackageCategory('beach', this)">🏖️ Beach & Islands</button>
+      <button class="cat-pill" onclick="selectPackageCategory('spiritual', this)">🪔 Spiritual & Ghats</button>
+      <button class="cat-pill" onclick="selectPackageCategory('urban', this)">🎬 Urban & Food</button>
+      <button class="cat-pill" onclick="selectPackageCategory('adventure', this)">🏔️ Mountain & Hills</button>
+    </div>
+  </section>
+
+  <!-- Packages Grid -->
+  <section class="section" style="padding-top: 0;">
+    <div id="packages-list" class="packages-grid"></div>
+  </section>
+
+  <!-- Inclusions Highlights -->
+  <div class="section-divider"></div>
+  <section class="section">
+    <div class="section-header">
+      <h2>What's Included in Every CityMate Package?</h2>
+      <p>We take care of the details so you can simply arrive and experience India.</p>
+    </div>
+
+    <div class="bulk-perks-grid">
+      <div class="bulk-perk-card">
+        <div class="bulk-perk-icon"><i class="fas fa-bed"></i></div>
+        <div>
+          <h4>Handpicked Stays</h4>
+          <p>Verified heritage Havelis, boutique homestays, or 4-star hotels.</p>
+        </div>
+      </div>
+      <div class="bulk-perk-card">
+        <div class="bulk-perk-icon"><i class="fas fa-user-check"></i></div>
+        <div>
+          <h4>Vetted Local Guides</h4>
+          <p>Certified local storytellers at each major monument and trail.</p>
+        </div>
+      </div>
+      <div class="bulk-perk-card">
+        <div class="bulk-perk-icon"><i class="fas fa-car"></i></div>
+        <div>
+          <h4>Seamless Transfers</h4>
+          <p>Private air-conditioned cabs for intercity and sightseeing transfers.</p>
+        </div>
+      </div>
+      <div class="bulk-perk-card">
+        <div class="bulk-perk-icon"><i class="fas fa-utensils"></i></div>
+        <div>
+          <h4>Authentic Food Walks</h4>
+          <p>Signature local breakfast and curated street food experiences.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer"><p>© 2025 CityMate. Crafted for travelers, by locals.</p></footer>
+
+  <script src="script.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      renderPackages();
+    });
+  </script>
+</body>
+</html>

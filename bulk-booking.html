@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bulk & Group Booking — CityMate</title>
+  <meta name="description" content="Group travel packages, corporate retreats, and educational tours with local expert squads and curated stays across India.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo"><i class="fas fa-compass"></i> CityMate</a>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="services.html">Services</a>
+        <a href="guides.html">Guides</a>
+        <a href="stays.html">Stays</a>
+        <a href="packages.html">Packages</a>
+        <a href="bulk-booking.html" class="active">Bulk Booking</a>
+        <a href="reviews.html">Reviews</a>
+        <a href="contact.html">Contact</a>
+        <a href="booking-form.html" class="nav-book-btn">Book Now</a>
+        <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle theme"><i class="fas fa-moon"></i></button>
+      </div>
+      <div class="hamburger" onclick="document.querySelector('.mobile-menu').classList.toggle('open')"><span></span><span></span><span></span></div>
+    </div>
+  </nav>
+
+  <div class="mobile-menu">
+    <a href="index.html">Home</a>
+    <a href="services.html">Services</a>
+    <a href="guides.html">Guides</a>
+    <a href="stays.html">Stays</a>
+    <a href="packages.html">Packages</a>
+    <a href="bulk-booking.html" class="active">Bulk Booking</a>
+    <a href="reviews.html">Reviews</a>
+    <a href="contact.html">Contact</a>
+    <a href="booking-form.html" class="nav-book-btn" style="display:inline-block;margin-top:0.5rem;">Book Now</a>
+  </div>
+
+  <!-- Hero Section -->
+  <section class="hero" style="min-height: 480px; padding: 120px 2rem 60px;">
+    <div class="hero-bg"></div>
+    <div style="max-width: var(--max-width); margin: 0 auto; text-align: center; position: relative; z-index: 2;">
+      <div style="display: inline-flex; align-items: center; gap: 0.5rem; background: var(--accent-soft); color: var(--accent); padding: 0.4rem 1rem; border-radius: 999px; font-size: 0.85rem; font-weight: 600; margin-bottom: 1.5rem; border: 1px solid rgba(255,107,53,0.3);">
+        <i class="fas fa-users"></i> Corporate & Large Group Travel
+      </div>
+      <h1 style="font-size: 2.75rem; font-weight: 800; letter-spacing: -0.03em; margin-bottom: 1.25rem;">
+        Group Travel Made <span style="color: var(--accent);">Effortless.</span>
+      </h1>
+      <p style="max-width: 680px; margin: 0 auto 2rem; color: var(--text-secondary); font-size: 1.1rem; line-height: 1.7;">
+        Organizing an offsite, family reunion, or student excursion? Get dedicated multi-guide squads, block verified boutique stays, and receive custom itineraries with volume discounts.
+      </p>
+      <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+        <a href="#bulk-form-section" class="btn-primary">
+          <i class="fas fa-clipboard-list"></i> Request Group Quote
+        </a>
+        <a href="booking-form.html?type=single" class="btn-secondary">
+          <i class="fas fa-user"></i> Need a Single Guide?
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Perks Grid -->
+  <section class="section">
+    <div class="section-header">
+      <h2>Why Book in Bulk with CityMate?</h2>
+      <p>Everything you need to manage seamless travel for 5 to 500+ guests.</p>
+    </div>
+
+    <div class="services-grid">
+      <div class="service-card" data-animate>
+        <div class="service-icon"><i class="fas fa-tags"></i></div>
+        <h3>Volume Discounts</h3>
+        <p>Save 15% to 25% off regular guide hourly rates and hotel rooms when booking for 8+ people.</p>
+      </div>
+
+      <div class="service-card" data-animate>
+        <div class="service-icon"><i class="fas fa-user-tie"></i></div>
+        <h3>Dedicated Concierge</h3>
+        <p>A single point-of-contact manager handles your itinerary, timelines, dietary needs, and emergencies 24/7.</p>
+      </div>
+
+      <div class="service-card" data-animate>
+        <div class="service-icon"><i class="fas fa-hotel"></i></div>
+        <h3>Guaranteed Room Blocks</h3>
+        <p>Entire floors or boutique properties blocked together so your team or family stays in one location.</p>
+      </div>
+
+      <div class="service-card" data-animate>
+        <div class="service-icon"><i class="fas fa-file-invoice-dollar"></i></div>
+        <h3>Corporate GST Invoicing</h3>
+        <p>Unified business billing, GST invoices, and flexible payment terms for enterprise procurement.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Packages / Tiers -->
+  <div class="section-divider"></div>
+  <section class="section">
+    <div class="section-header">
+      <h2>Popular Group Packages</h2>
+      <p>Tailored experiences designed for groups of every shape and size.</p>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-top: 2rem;">
+      <!-- Card 1 -->
+      <div class="form-card" style="padding: 2rem; display: flex; flex-direction: column;">
+        <span class="badge badge-bulk" style="align-self: flex-start; margin-bottom: 1rem;">10–25 Guests</span>
+        <h3 style="margin-bottom: 0.5rem;">Corporate Offsites & Retreats</h3>
+        <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 1.5rem;">
+          Ideal for startups, agile teams, and leadership summits. Combine heritage tours with team-building food trails.
+        </p>
+        <ul style="list-style: none; padding: 0; margin-bottom: 2rem; font-size: 0.88rem; color: var(--text); line-height: 2;">
+          <li><i class="fas fa-check" style="color: var(--accent); margin-right: 0.5rem;"></i> 2 Dedicated local guides</li>
+          <li><i class="fas fa-check" style="color: var(--accent); margin-right: 0.5rem;"></i> Boutique resort / homestay block</li>
+          <li><i class="fas fa-check" style="color: var(--accent); margin-right: 0.5rem;"></i> Curated private dinner booking</li>
+        </ul>
+        <a href="#bulk-form-section" onclick="selectPackage('Corporate Retreat', 15)" class="btn-primary" style="margin-top: auto; text-align: center;">Book This Package</a>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="form-card" style="padding: 2rem; display: flex; flex-direction: column; border-color: var(--accent);">
+        <span class="badge badge-bulk" style="align-self: flex-start; margin-bottom: 1rem; background: var(--accent-soft); color: var(--accent);">25–75 Guests · Popular</span>
+        <h3 style="margin-bottom: 0.5rem;">College & Educational Tours</h3>
+        <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 1.5rem;">
+          High-energy, safe, and academically rich walks for student batches, universities, and youth clubs.
+        </p>
+        <ul style="list-style: none; padding: 0; margin-bottom: 2rem; font-size: 0.88rem; color: var(--text); line-height: 2;">
+          <li><i class="fas fa-check" style="color: var(--accent); margin-right: 0.5rem;"></i> 3–5 History & culture specialists</li>
+          <li><i class="fas fa-check" style="color: var(--accent); margin-right: 0.5rem;"></i> Verified budget stays with secure entry</li>
+          <li><i class="fas fa-check" style="color: var(--accent); margin-right: 0.5rem;"></i> Group bus & entry ticket coordination</li>
+        </ul>
+        <a href="#bulk-form-section" onclick="selectPackage('College Tour', 40)" class="btn-primary" style="margin-top: auto; text-align: center;">Book This Package</a>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="form-card" style="padding: 2rem; display: flex; flex-direction: column;">
+        <span class="badge badge-bulk" style="align-self: flex-start; margin-bottom: 1rem;">Custom Size</span>
+        <h3 style="margin-bottom: 0.5rem;">Family & Wedding Expeditions</h3>
+        <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 1.5rem;">
+          Keep large multi-generational families comfortable with flexible pacing, senior-friendly stays, and child-safe routes.
+        </p>
+        <ul style="list-style: none; padding: 0; margin-bottom: 2rem; font-size: 0.88rem; color: var(--text); line-height: 2;">
+          <li><i class="fas fa-check" style="color: var(--accent); margin-right: 0.5rem;"></i> Patient, local family guides</li>
+          <li><i class="fas fa-check" style="color: var(--accent); margin-right: 0.5rem;"></i> Heritage Haveli or villa buyout</li>
+          <li><i class="fas fa-check" style="color: var(--accent); margin-right: 0.5rem;"></i> Customized slow-paced itineraries</li>
+        </ul>
+        <a href="#bulk-form-section" onclick="selectPackage('Family Gathering', 20)" class="btn-primary" style="margin-top: auto; text-align: center;">Book This Package</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Bulk Booking Form Section -->
+  <div class="section-divider" id="bulk-form-section"></div>
+  <section class="section" style="max-width: 860px;">
+    <div class="section-header">
+      <h2>Submit Your Group Travel Inquiry</h2>
+      <p>Tell us your group details and our corporate coordinator will deliver a custom proposal within 24 hours.</p>
+    </div>
+
+    <div class="form-card">
+      <form id="bulkBookingPageForm">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Primary Contact / Organizer <span>*</span></label>
+            <input type="text" id="bb-name" placeholder="Your full name" required>
+          </div>
+          <div class="form-group">
+            <label>Work / Personal Email <span>*</span></label>
+            <input type="email" id="bb-email" placeholder="you@company.com" required>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Phone Number <span>*</span></label>
+            <input type="tel" id="bb-phone" placeholder="+91 98765 43210" required>
+          </div>
+          <div class="form-group">
+            <label>Organization / Group Name</label>
+            <input type="text" id="bb-org" placeholder="Company, College, or Family Name">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Destination City <span>*</span></label>
+            <input type="text" id="bb-city" placeholder="e.g. Delhi, Jaipur, Agra, Mumbai, Goa" required>
+          </div>
+          <div class="form-group">
+            <label>Total Number of Travelers <span>*</span></label>
+            <input type="number" id="bb-group-size" min="2" max="1000" placeholder="e.g. 20" required>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Primary Service Needed <span>*</span></label>
+            <select id="bb-service" required>
+              <option value="">Select service package</option>
+              <option value="Multi-Guide Squad (For Large Tours)">Multi-Guide Squad (For Large Tours)</option>
+              <option value="Bulk Stay & Hotel Block Booking">Bulk Stay & Hotel Block Booking</option>
+              <option value="Full Corporate Retreat Package">Full Corporate Retreat Package</option>
+              <option value="College / Student Group Excursion">College / Student Group Excursion</option>
+              <option value="Custom Multi-City Group Itinerary">Custom Multi-City Group Itinerary</option>
+              <option value="Curated Family Gathering Package">Curated Family Gathering Package</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Estimated Guides or Rooms Needed</label>
+            <input type="number" id="bb-rooms-guides" min="1" max="100" placeholder="e.g. 4 guides or 10 rooms">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Trip Start Date <span>*</span></label>
+            <input type="date" id="bb-date" required>
+          </div>
+          <div class="form-group">
+            <label>Trip End Date (Optional)</label>
+            <input type="date" id="bb-end-date">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Estimated Budget (Optional)</label>
+          <input type="text" id="bb-budget" placeholder="e.g. ₹1,00,000 to ₹3,00,000">
+        </div>
+
+        <div class="form-group">
+          <label>Group Requirements & Special Notes</label>
+          <textarea id="bb-message" rows="4" placeholder="Detail your itinerary preferences, meeting spaces required, catering/dietary needs, or any specific local spots you want included..."></textarea>
+        </div>
+
+        <button type="submit" class="btn-submit" id="bb-submit">
+          <i class="fas fa-paper-plane"></i> Submit Group Booking Inquiry
+        </button>
+      </form>
+    </div>
+  </section>
+
+  <footer class="footer"><p>© 2025 CityMate. Crafted for travelers, by locals.</p></footer>
+
+  <script type="module">
+    import { bulkBookService } from './api.js';
+
+    window.selectPackage = function(pkg, guests) {
+      if (pkg.includes('Corporate')) document.getElementById('bb-service').value = 'Full Corporate Retreat Package';
+      if (pkg.includes('College')) document.getElementById('bb-service').value = 'College / Student Group Excursion';
+      if (pkg.includes('Family')) document.getElementById('bb-service').value = 'Curated Family Gathering Package';
+      if (guests) document.getElementById('bb-group-size').value = guests;
+
+      document.getElementById('bulk-form-section').scrollIntoView({ behavior: 'smooth' });
+    };
+
+    document.getElementById('bulkBookingPageForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = document.getElementById('bb-submit');
+
+      const name = document.getElementById('bb-name').value.trim();
+      const email = document.getElementById('bb-email').value.trim();
+      const phone = document.getElementById('bb-phone').value.trim();
+      const organization = document.getElementById('bb-org').value.trim();
+      const city = document.getElementById('bb-city').value.trim();
+      const groupSize = parseInt(document.getElementById('bb-group-size').value, 10) || 5;
+      const service = document.getElementById('bb-service').value;
+      const roomsOrGuidesCount = parseInt(document.getElementById('bb-rooms-guides').value, 10) || 1;
+      const date = document.getElementById('bb-date').value;
+      const endDate = document.getElementById('bb-end-date').value;
+      const estimatedBudget = document.getElementById('bb-budget').value.trim();
+      const message = document.getElementById('bb-message').value.trim();
+
+      if (!validateEmail(email)) {
+        showToast('Please enter a valid email address', 'error');
+        return;
+      }
+
+      setLoading(btn, true);
+      try {
+        await bulkBookService({
+          name,
+          email,
+          phone,
+          organization,
+          city,
+          groupSize,
+          service,
+          roomsOrGuidesCount,
+          date,
+          endDate,
+          estimatedBudget,
+          message,
+          bookingType: 'bulk'
+        });
+
+        showToast(`🎉 Bulk booking inquiry for ${groupSize} travelers submitted! Our dedicated team will contact you shortly.`, 'success', 6000);
+        document.getElementById('bulkBookingPageForm').reset();
+      } catch (err) {
+        showToast(err.message || 'Failed to submit group booking', 'error');
+      } finally {
+        setLoading(btn, false);
+      }
+    });
+  </script>
+  <script src="script.js"></script>
+</body>
+</html>

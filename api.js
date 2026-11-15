@@ -2,7 +2,11 @@
 // CityMate API Client
 // ============================================================
 
-const API_BASE_URL = window.API_URL || 'https://city-mate-backend-1.onrender.com';
+const API_BASE_URL = window.API_URL || (
+  typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+    ? 'http://localhost:3001'
+    : 'https://city-mate-backend-1.onrender.com'
+);
 
 function getToken() { return localStorage.getItem('cm_token'); }
 
@@ -35,7 +39,7 @@ async function api(endpoint, options = {}) {
       if (res.status === 401) {
         localStorage.removeItem('cm_token');
         if (window.location.pathname.includes('admin')) {
-          window.location.href = '/login.html';
+          window.location.href = 'login.html';
         }
       }
       throw new Error(data?.message || `HTTP ${res.status}`);
@@ -52,6 +56,8 @@ async function api(endpoint, options = {}) {
 // ─── PUBLIC API ───
 
 export const bookService = (data) => api('/api/book', { method: 'POST', body: data });
+export const bulkBookService = (data) => api('/api/book/bulk', { method: 'POST', body: data });
+export const packageBookService = (data) => api('/api/book/package', { method: 'POST', body: data });
 export const submitReview = (data) => api('/api/review', { method: 'POST', body: data });
 export const fetchReviews = () => api('/api/reviews');
 export const submitContact = (data) => api('/api/contact', { method: 'POST', body: data });

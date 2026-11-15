@@ -129,6 +129,181 @@ const staysData = [
   { id: 7, city: 'Goa', name: 'Anjuna Beach Hut', price: 1200, rating: 4.6, image: '🏖️', details: 'Beachfront budget stay' }
 ];
 
+const packagesData = [
+  {
+    id: 1,
+    title: 'Golden Triangle Royal Circuit',
+    tagline: 'Delhi · Agra · Jaipur Heritage Trail',
+    category: 'Heritage',
+    duration: '5 Days / 4 Nights',
+    price: 8499,
+    originalPrice: 11999,
+    rating: 4.9,
+    reviewsCount: 142,
+    image: '🏰',
+    city: 'Delhi, Agra, Jaipur',
+    highlights: ['Sunrise Taj Mahal tour', 'Amber Fort private elephant walk', 'Old Delhi rickshaw food crawl', 'Hawa Mahal & Qutub Minar'],
+    inclusions: ['4-Star & Heritage Stays', 'Private AC Cab', '3 Certified Local Guides', 'Daily Breakfast', 'Monument Entry Tickets']
+  },
+  {
+    id: 2,
+    title: 'Goa Coastal & Catamaran Explorer',
+    tagline: 'Sunsets · Private Catamaran · Spice Trails',
+    category: 'Beach',
+    duration: '4 Days / 3 Nights',
+    price: 6999,
+    originalPrice: 9500,
+    rating: 4.8,
+    reviewsCount: 98,
+    image: '🏖️',
+    city: 'Goa',
+    highlights: ['Sunset Cruise on Mandovi River', 'Dudhsagar Waterfall trek & jeep drive', 'Old Goa Portuguese Latin Quarter walk', 'Anjuna beach nightlife trail'],
+    inclusions: ['Beachfront Boutique Resort', 'Private Cab Transfers', 'Local Party & Food Guide', 'Sunset Cruise Ticket', 'Complimentary Seafood Lunch']
+  },
+  {
+    id: 3,
+    title: 'Varanasi Spiritual & Ghats Awakening',
+    tagline: 'Morning Boat Cruise · Sarnath · Ganga Aarti',
+    category: 'Spiritual',
+    duration: '3 Days / 2 Nights',
+    price: 4999,
+    originalPrice: 6500,
+    rating: 4.9,
+    reviewsCount: 84,
+    image: '🪔',
+    city: 'Varanasi',
+    highlights: ['Subah-e-Banaras sunrise boat tour', 'VIP Dashashwamedh Ganga Aarti seating', 'Kashi Vishwanath Corridor walk', 'Ancient Silk weavers atelier'],
+    inclusions: ['Ghatside Heritage Haveli Stay', 'Private Wooden Boat rides', 'Vedic Scholar & City Guide', 'Kachori & Lassi Food Tour', 'Sarnath Day Excursion']
+  },
+  {
+    id: 4,
+    title: 'Mumbai Maximum City & Bollywood Trail',
+    tagline: 'Colonial Architecture · Film City · Street Food',
+    category: 'Urban',
+    duration: '3 Days / 2 Nights',
+    price: 5499,
+    originalPrice: 7200,
+    rating: 4.7,
+    reviewsCount: 76,
+    image: '🎬',
+    city: 'Mumbai',
+    highlights: ['South Mumbai British heritage walk', 'Dharavi community & craft tour', 'Bollywood studio live shoot tour', 'Chowpatty beach food safari'],
+    inclusions: ['Colaba 3-Star Stay', 'AC City Transfers', 'Filmmaker Local Guide', 'Food Tasting Pass', 'Gateway of India Ferry ticket']
+  },
+  {
+    id: 5,
+    title: 'Rajasthan Desert Dunes & Palaces',
+    tagline: 'Jodhpur Blue City · Jaisalmer Luxury Camp',
+    category: 'Heritage',
+    duration: '5 Days / 4 Nights',
+    price: 9200,
+    originalPrice: 12500,
+    rating: 4.9,
+    reviewsCount: 110,
+    image: '🐪',
+    city: 'Jodhpur, Jaisalmer',
+    highlights: ['Sam Sand Dunes sunset camel safari', 'Mehrangarh Fort private guided tour', 'Swiss tent desert camp with folk dance', 'Golden Fort living quarter walk'],
+    inclusions: ['1 Night Luxury Desert Camp + 3 Nights Heritage Hotels', 'Rajasthani Buffet & Campfire', 'Desert Safari Guide', 'All Intercity Transfers', 'Folk Dance & Music Evening']
+  },
+  {
+    id: 6,
+    title: 'Himachal Mountain Escape & Trails',
+    tagline: 'Manali · Solang Valley · Kasol River Walk',
+    category: 'Adventure',
+    duration: '4 Days / 3 Nights',
+    price: 7499,
+    originalPrice: 9999,
+    rating: 4.8,
+    reviewsCount: 65,
+    image: '🏔️',
+    city: 'Manali, Kasol',
+    highlights: ['Solang Valley snow & alpine viewpoints', 'Old Manali cafe & Apple orchard trails', 'Kasol Parvati river walk', 'Manikaran natural hot springs'],
+    inclusions: ['Scenic Mountain Cottage Stay', 'Private Hill Transfers', 'Alpine Trekking Guide', 'Daily Breakfast & Dinner', 'Bonfire Night']
+  }
+];
+
+// ─── RENDER PACKAGES ───
+let selectedPackageCategory = 'all';
+
+function renderPackages(filtered = packagesData) {
+  const list = document.getElementById('packages-list');
+  if (!list) return;
+
+  if (!filtered.length) {
+    list.innerHTML = `
+      <div style="grid-column: 1/-1; text-align: center; padding: 3rem 1rem; color: var(--text-secondary);">
+        <i class="fas fa-box-open" style="font-size: 2.5rem; margin-bottom: 1rem; color: var(--text-dim); display: block;"></i>
+        <h3>No tour packages found</h3>
+        <p>Try searching for a different destination or theme.</p>
+      </div>
+    `;
+    return;
+  }
+
+  list.innerHTML = filtered.map(p => `
+    <div class="package-card" data-animate>
+      <div class="package-header">
+        <div class="package-emoji">${p.image}</div>
+        <div class="package-category">${p.category}</div>
+        <div class="package-duration"><i class="fas fa-clock"></i> ${p.duration}</div>
+      </div>
+      <div class="package-body">
+        <div class="package-cities"><i class="fas fa-map-marker-alt" style="color:var(--accent);"></i> ${p.city}</div>
+        <h3 class="package-title">${p.title}</h3>
+        <p class="package-tagline">${p.tagline}</p>
+
+        <div class="package-highlights">
+          <strong>Highlights:</strong>
+          <ul>
+            ${p.highlights.slice(0, 3).map(h => `<li><i class="fas fa-check-circle"></i> ${h}</li>`).join('')}
+          </ul>
+        </div>
+
+        <div class="package-inclusions-pills">
+          ${p.inclusions.slice(0, 3).map(inc => `<span class="inc-pill">${inc}</span>`).join('')}
+          ${p.inclusions.length > 3 ? `<span class="inc-pill">+${p.inclusions.length - 3} more</span>` : ''}
+        </div>
+      </div>
+
+      <div class="package-footer">
+        <div>
+          <div class="package-price">
+            ₹${p.price.toLocaleString('en-IN')}<small>/person</small>
+            ${p.originalPrice ? `<span class="original-price">₹${p.originalPrice.toLocaleString('en-IN')}</span>` : ''}
+          </div>
+          <div class="package-rating">⭐ ${p.rating} <span style="font-size:0.75rem;color:var(--text-dim);">(${p.reviewsCount})</span></div>
+        </div>
+        <a href="booking-form.html?type=package&name=${encodeURIComponent(p.title)}&city=${encodeURIComponent(p.city)}&price=${p.price}&duration=${encodeURIComponent(p.duration)}" class="btn-primary" style="padding:0.6rem 1.2rem;font-size:0.88rem;">
+          Book Package
+        </a>
+      </div>
+    </div>
+  `).join('');
+
+  if (window.initScrollAnimations) initScrollAnimations();
+}
+
+function filterPackages() {
+  const query = (document.getElementById('packageSearch')?.value || '').toLowerCase();
+  const filtered = packagesData.filter(p => {
+    const matchesCategory = selectedPackageCategory === 'all' || p.category.toLowerCase() === selectedPackageCategory.toLowerCase();
+    const matchesQuery =
+      p.title.toLowerCase().includes(query) ||
+      p.city.toLowerCase().includes(query) ||
+      p.tagline.toLowerCase().includes(query) ||
+      p.category.toLowerCase().includes(query);
+    return matchesCategory && matchesQuery;
+  });
+  renderPackages(filtered);
+}
+
+function selectPackageCategory(cat, el) {
+  selectedPackageCategory = cat;
+  document.querySelectorAll('.cat-pill').forEach(b => b.classList.remove('active'));
+  if (el) el.classList.add('active');
+  filterPackages();
+}
+
 // ─── RENDER GUIDES ───
 function renderGuides(filtered = guidesData) {
   const list = document.getElementById('guides-list');
@@ -197,6 +372,10 @@ window.setLoading = setLoading;
 window.validateEmail = validateEmail;
 window.renderGuides = renderGuides;
 window.renderStays = renderStays;
+window.renderPackages = renderPackages;
 window.filterGuides = filterGuides;
 window.filterStays = filterStays;
+window.filterPackages = filterPackages;
+window.selectPackageCategory = selectPackageCategory;
+window.packagesData = packagesData;
 

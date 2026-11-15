@@ -18,6 +18,8 @@
         <a href="services.html">Services</a>
         <a href="guides.html">Guides</a>
         <a href="stays.html">Stays</a>
+        <a href="packages.html">Packages</a>
+        <a href="bulk-booking.html">Bulk Booking</a>
         <a href="reviews.html">Reviews</a>
         <a href="contact.html">Contact</a>
         <a href="booking-form.html" class="nav-book-btn">Book Now</a>
@@ -26,48 +28,196 @@
       <div class="hamburger" onclick="document.querySelector('.mobile-menu').classList.toggle('open')"><span></span><span></span><span></span></div>
     </div>
   </nav>
-<div class="mobile-menu"><a href="index.html">Home</a><a href="services.html">Services</a><a href="guides.html">Guides</a><a href="stays.html">Stays</a><a href="reviews.html">Reviews</a><a href="contact.html">Contact</a><a href="booking-form.html" class="nav-book-btn" style="display:inline-block;margin-top:0.5rem;">Book Now</a></div>
+  <div class="mobile-menu">
+    <a href="index.html">Home</a>
+    <a href="services.html">Services</a>
+    <a href="guides.html">Guides</a>
+    <a href="stays.html">Stays</a>
+    <a href="packages.html">Packages</a>
+    <a href="bulk-booking.html">Bulk Booking</a>
+    <a href="reviews.html">Reviews</a>
+    <a href="contact.html">Contact</a>
+    <a href="booking-form.html" class="nav-book-btn" style="display:inline-block;margin-top:0.5rem;">Book Now</a>
+  </div>
 
-  <div class="form-container">
+  <div class="form-container" style="max-width: 860px; margin: 120px auto 60px; padding: 0 1.5rem;">
+    <!-- Booking Mode Switcher: 3 Options -->
+    <div class="booking-segmented-control">
+      <button type="button" class="booking-segmented-btn active" id="btn-mode-single" onclick="setBookingMode('single')">
+        <i class="fas fa-user"></i> Individual
+      </button>
+      <button type="button" class="booking-segmented-btn" id="btn-mode-package" onclick="setBookingMode('package')">
+        <i class="fas fa-box-open"></i> Tour Package
+      </button>
+      <button type="button" class="booking-segmented-btn" id="btn-mode-bulk" onclick="setBookingMode('bulk')">
+        <i class="fas fa-users"></i> Bulk / Group
+      </button>
+    </div>
+
+    <!-- Bulk Perks Highlight (shown when in bulk mode) -->
+    <div id="bulk-perks" class="bulk-perks-grid" style="display: none;">
+      <div class="bulk-perk-card">
+        <div class="bulk-perk-icon"><i class="fas fa-percentage"></i></div>
+        <div>
+          <h4>Group Discounts</h4>
+          <p>Save 15% to 25% for groups of 8 or more travelers.</p>
+        </div>
+      </div>
+      <div class="bulk-perk-card">
+        <div class="bulk-perk-icon"><i class="fas fa-user-shield"></i></div>
+        <div>
+          <h4>Dedicated Squad Lead</h4>
+          <p>Personal tour coordinator assigned to your group 24/7.</p>
+        </div>
+      </div>
+      <div class="bulk-perk-card">
+        <div class="bulk-perk-icon"><i class="fas fa-file-invoice"></i></div>
+        <div>
+          <h4>Unified Billing</h4>
+          <p>One consolidated GST invoice for stays, food & guides.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Package Inclusions Highlight (shown when in package mode) -->
+    <div id="package-perks" class="bulk-perks-grid" style="display: none;">
+      <div class="bulk-perk-card">
+        <div class="bulk-perk-icon" style="background:rgba(245,158,11,0.15);color:#f59e0b;"><i class="fas fa-hotel"></i></div>
+        <div>
+          <h4>Stays Included</h4>
+          <p>Verified heritage Havelis or boutique 4-star stays.</p>
+        </div>
+      </div>
+      <div class="bulk-perk-card">
+        <div class="bulk-perk-icon" style="background:rgba(245,158,11,0.15);color:#f59e0b;"><i class="fas fa-map-marked-alt"></i></div>
+        <div>
+          <h4>Guides & Passes</h4>
+          <p>Certified local guides and priority monument entry.</p>
+        </div>
+      </div>
+      <div class="bulk-perk-card">
+        <div class="bulk-perk-icon" style="background:rgba(245,158,11,0.15);color:#f59e0b;"><i class="fas fa-shuttle-van"></i></div>
+        <div>
+          <h4>Private Transfers</h4>
+          <p>AC intercity and sightseeing transportation.</p>
+        </div>
+      </div>
+    </div>
+
     <div class="form-card">
-      <h2><i class="fas fa-calendar-check" style="color:var(--accent);"></i> Book a Service</h2>
-      <p>Fill in your details and we'll connect you with the perfect local expert.</p>
+      <h2 id="form-title"><i class="fas fa-calendar-check" style="color:var(--accent);"></i> Book a Service</h2>
+      <p id="form-desc">Fill in your details and we'll connect you with the perfect local expert.</p>
 
       <form id="bookingForm">
-        <div class="form-group">
-          <label>Full Name <span>*</span></label>
-          <input type="text" id="b-name" placeholder="Your full name" required>
+        <!-- Hidden input for booking type -->
+        <input type="hidden" id="b-type" value="single">
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Primary Contact Name <span>*</span></label>
+            <input type="text" id="b-name" placeholder="Full name of traveler / organizer" required>
+          </div>
+          <div class="form-group">
+            <label>Email Address <span>*</span></label>
+            <input type="email" id="b-email" placeholder="you@example.com" required>
+          </div>
         </div>
-        <div class="form-group">
-          <label>Email <span>*</span></label>
-          <input type="email" id="b-email" placeholder="you@example.com" required>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Phone Number <span>*</span></label>
+            <input type="tel" id="b-phone" placeholder="+91 98765 43210" required>
+          </div>
+          <div class="form-group">
+            <label>City / Circuit <span>*</span></label>
+            <input type="text" id="b-city" placeholder="e.g. Delhi, Jaipur, Goa, Varanasi" required>
+          </div>
         </div>
-        <div class="form-group">
-          <label>Phone</label>
-          <input type="tel" id="b-phone" placeholder="+91 98765 43210">
+
+        <!-- Package Specific Fields -->
+        <div id="package-fields" style="display: none;">
+          <div class="form-group">
+            <label>Select Tour Package <span>*</span></label>
+            <select id="pkg-select" onchange="onPackageChange()">
+              <!-- Populated dynamically -->
+            </select>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Number of Travelers / Persons <span>*</span></label>
+              <input type="number" id="pkg-travelers" min="1" max="30" value="2" oninput="calculatePackagePrice()">
+            </div>
+            <div class="form-group">
+              <label>Room Sharing Preference</label>
+              <select id="pkg-room-pref" onchange="calculatePackagePrice()">
+                <option value="Twin Sharing (Standard)">Twin Sharing (Standard included)</option>
+                <option value="Single Private Room">Single Private Room (+₹2,500/night)</option>
+                <option value="Triple Sharing Room">Triple Sharing Room (Save ₹500/person)</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Live Price Summary Box -->
+          <div class="price-summary-box">
+            <div>
+              <div class="price-summary-label">Estimated Total Package Price:</div>
+              <small id="pkg-calculation-note" style="color:var(--text-dim);">₹8,499 × 2 Persons</small>
+            </div>
+            <div class="price-summary-amount" id="pkg-total-display">₹16,998</div>
+          </div>
         </div>
-        <div class="form-group">
-          <label>Service <span>*</span></label>
-          <select id="b-service" required>
-            <option value="">Select a service</option>
-            <option value="Personal Guide">Personal Guide</option>
-            <option value="Curated Stay">Curated Stay</option>
-            <option value="Day Trip">Day Trip</option>
-            <option value="Food Tour">Food Tour</option>
-            <option value="Photography Tour">Photography Tour</option>
-            <option value="Cultural Experience">Cultural Experience</option>
-          </select>
+
+        <!-- Bulk specific row: Organization and Group Size -->
+        <div id="bulk-fields" style="display: none;">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Organization / Group Name</label>
+              <input type="text" id="b-org" placeholder="Company, College, or Family Group Name">
+            </div>
+            <div class="form-group">
+              <label>Total Travelers / Guests <span>*</span></label>
+              <input type="number" id="b-group-size" min="2" max="500" placeholder="e.g. 15">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Guides / Rooms Needed</label>
+              <input type="number" id="b-rooms-guides" min="1" max="100" placeholder="e.g. 3 guides or 8 rooms">
+            </div>
+            <div class="form-group">
+              <label>Estimated Total Budget (Optional)</label>
+              <input type="text" id="b-budget" placeholder="e.g. ₹1,50,000">
+            </div>
+          </div>
         </div>
-        <div class="form-group">
-          <label>Preferred Date <span>*</span></label>
-          <input type="date" id="b-date" required>
+
+        <div class="form-row" id="single-service-row">
+          <div class="form-group" id="service-select-group">
+            <label>Service Category <span>*</span></label>
+            <select id="b-service" required>
+              <option value="">Select a service</option>
+              <!-- Populated dynamically based on single/bulk -->
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Trip Start / Travel Date <span>*</span></label>
+            <input type="date" id="b-date" required>
+          </div>
         </div>
-        <div class="form-group">
-          <label>Additional Notes</label>
-          <textarea id="b-message" placeholder="Tell us about your trip, preferences, or any special requests..."></textarea>
+
+        <div class="form-group" id="group-end-date" style="display: none;">
+          <label>Trip End Date (Optional for multi-day tours / stays)</label>
+          <input type="date" id="b-end-date">
         </div>
+
+        <div class="form-group">
+          <label>Special Requests, Dietary Needs or Itinerary Notes</label>
+          <textarea id="b-message" rows="4" placeholder="Tell us about your trip schedule, food preferences, or any specific local spots you'd love to visit..."></textarea>
+        </div>
+
         <button type="submit" class="btn-submit" id="b-submit">
-          <i class="fas fa-paper-plane"></i> Submit Booking
+          <i class="fas fa-paper-plane"></i> <span id="submit-btn-text">Submit Booking</span>
         </button>
       </form>
     </div>
@@ -76,16 +226,196 @@
   <footer class="footer"><p>© 2025 CityMate. Crafted for travelers, by locals.</p></footer>
 
   <script type="module">
-    import { bookService } from './api.js';
+    import { bookService, bulkBookService, packageBookService } from './api.js';
+
+    const singleServices = [
+      'Personal Guide',
+      'Curated Stay',
+      'Day Trip',
+      'Food Tour',
+      'Photography Tour',
+      'Cultural Experience'
+    ];
+
+    const bulkServices = [
+      'Multi-Guide Squad (For Large Tours)',
+      'Bulk Stay & Hotel Block Booking',
+      'Full Corporate Retreat Package',
+      'College / Student Group Excursion',
+      'Custom Multi-City Group Itinerary',
+      'Curated Family Gathering Package'
+    ];
+
+    const packagesList = window.packagesData || [
+      { id: 1, title: 'Golden Triangle Royal Circuit', price: 8499, duration: '5 Days / 4 Nights', city: 'Delhi, Agra, Jaipur' },
+      { id: 2, title: 'Goa Coastal & Catamaran Explorer', price: 6999, duration: '4 Days / 3 Nights', city: 'Goa' },
+      { id: 3, title: 'Varanasi Spiritual & Ghats Awakening', price: 4999, duration: '3 Days / 2 Nights', city: 'Varanasi' },
+      { id: 4, title: 'Mumbai Maximum City & Bollywood Trail', price: 5499, duration: '3 Days / 2 Nights', city: 'Mumbai' },
+      { id: 5, title: 'Rajasthan Desert Dunes & Palaces', price: 9200, duration: '5 Days / 4 Nights', city: 'Jodhpur, Jaisalmer' },
+      { id: 6, title: 'Himachal Mountain Escape & Trails', price: 7499, duration: '4 Days / 3 Nights', city: 'Manali, Kasol' }
+    ];
+
+    function populatePackagesDropdown() {
+      const select = document.getElementById('pkg-select');
+      select.innerHTML = packagesList.map(p =>
+        `<option value="${p.id}" data-name="${p.title}" data-price="${p.price}" data-duration="${p.duration}" data-city="${p.city}">
+          ${p.title} — ₹${p.price.toLocaleString('en-IN')}/person (${p.duration})
+        </option>`
+      ).join('');
+    }
+
+    window.onPackageChange = function() {
+      const select = document.getElementById('pkg-select');
+      const opt = select.options[select.selectedIndex];
+      if (opt && opt.dataset.city) {
+        document.getElementById('b-city').value = opt.dataset.city;
+      }
+      calculatePackagePrice();
+    };
+
+    window.calculatePackagePrice = function() {
+      const select = document.getElementById('pkg-select');
+      const opt = select.options[select.selectedIndex];
+      if (!opt) return;
+
+      const basePrice = parseFloat(opt.dataset.price) || 8499;
+      const travelers = parseInt(document.getElementById('pkg-travelers').value, 10) || 1;
+      const total = basePrice * travelers;
+
+      document.getElementById('pkg-calculation-note').textContent = `₹${basePrice.toLocaleString('en-IN')} × ${travelers} Person${travelers > 1 ? 's' : ''}`;
+      document.getElementById('pkg-total-display').textContent = `₹${total.toLocaleString('en-IN')}`;
+
+      if (document.getElementById('b-type').value === 'package') {
+        document.getElementById('submit-btn-text').textContent = `Confirm Package Booking · ₹${total.toLocaleString('en-IN')}`;
+      }
+    };
+
+    function populateServices(mode) {
+      const select = document.getElementById('b-service');
+      const currentVal = select.value;
+      const list = mode === 'bulk' ? bulkServices : singleServices;
+
+      select.innerHTML = '<option value="">Select a service</option>' +
+        list.map(s => `<option value="${s}">${s}</option>`).join('');
+
+      if (list.includes(currentVal)) {
+        select.value = currentVal;
+      }
+    }
+
+    window.setBookingMode = function(mode) {
+      document.getElementById('b-type').value = mode;
+
+      const btnSingle = document.getElementById('btn-mode-single');
+      const btnPkg = document.getElementById('btn-mode-package');
+      const btnBulk = document.getElementById('btn-mode-bulk');
+
+      const bulkFields = document.getElementById('bulk-fields');
+      const bulkPerks = document.getElementById('bulk-perks');
+      const pkgFields = document.getElementById('package-fields');
+      const pkgPerks = document.getElementById('package-perks');
+      const serviceSelectGroup = document.getElementById('service-select-group');
+      const endDateGroup = document.getElementById('group-end-date');
+
+      const title = document.getElementById('form-title');
+      const desc = document.getElementById('form-desc');
+      const submitText = document.getElementById('submit-btn-text');
+      const serviceSelect = document.getElementById('b-service');
+
+      [btnSingle, btnPkg, btnBulk].forEach(b => b.classList.remove('active'));
+
+      if (mode === 'package') {
+        btnPkg.classList.add('active');
+        pkgFields.style.display = 'block';
+        pkgPerks.style.display = 'grid';
+        bulkFields.style.display = 'none';
+        bulkPerks.style.display = 'none';
+        serviceSelectGroup.style.display = 'none';
+        serviceSelect.required = false;
+        endDateGroup.style.display = 'none';
+
+        title.innerHTML = '<i class="fas fa-box-open" style="color:var(--accent);"></i> Book a Curated Tour Package';
+        desc.textContent = 'All-inclusive itinerary: boutique stays, private guide squads, transfers, and food walks.';
+        populatePackagesDropdown();
+        calculatePackagePrice();
+      } else if (mode === 'bulk') {
+        btnBulk.classList.add('active');
+        bulkFields.style.display = 'block';
+        bulkPerks.style.display = 'grid';
+        pkgFields.style.display = 'none';
+        pkgPerks.style.display = 'none';
+        serviceSelectGroup.style.display = 'block';
+        serviceSelect.required = true;
+        endDateGroup.style.display = 'block';
+
+        title.innerHTML = '<i class="fas fa-users" style="color:var(--accent);"></i> Group & Bulk Booking';
+        desc.textContent = 'Planning a trip for 5+ people? Get volume discounts, multi-guide squads, and unified corporate billing.';
+        submitText.textContent = 'Submit Bulk Booking Inquiry';
+        populateServices('bulk');
+      } else {
+        btnSingle.classList.add('active');
+        bulkFields.style.display = 'none';
+        bulkPerks.style.display = 'none';
+        pkgFields.style.display = 'none';
+        pkgPerks.style.display = 'none';
+        serviceSelectGroup.style.display = 'block';
+        serviceSelect.required = true;
+        endDateGroup.style.display = 'none';
+
+        title.innerHTML = '<i class="fas fa-calendar-check" style="color:var(--accent);"></i> Book a Service';
+        desc.textContent = "Fill in your details and we'll connect you with the perfect local expert.";
+        submitText.textContent = 'Submit Booking';
+        populateServices('single');
+      }
+    };
+
+    // Auto-fill from query params
+    const params = new URLSearchParams(window.location.search);
+    const type = params.get('type');
+    const nameParam = params.get('name');
+    const cityParam = params.get('city');
+    const priceParam = params.get('price');
+    const durationParam = params.get('duration');
+
+    populatePackagesDropdown();
+
+    if (type === 'package') {
+      window.setBookingMode('package');
+      if (nameParam) {
+        const select = document.getElementById('pkg-select');
+        for (let i = 0; i < select.options.length; i++) {
+          if (select.options[i].dataset.name === nameParam || select.options[i].text.includes(nameParam)) {
+            select.selectedIndex = i;
+            break;
+          }
+        }
+        window.onPackageChange();
+      }
+    } else if (type === 'bulk') {
+      window.setBookingMode('bulk');
+    } else {
+      window.setBookingMode('single');
+      if (type === 'guide') document.getElementById('b-service').value = 'Personal Guide';
+      if (type === 'stay') document.getElementById('b-service').value = 'Curated Stay';
+    }
+
+    if (cityParam) {
+      document.getElementById('b-city').value = cityParam;
+    }
+
+    if (nameParam && type !== 'package' && type !== 'bulk') {
+      document.getElementById('b-message').value = `Inquiry for: ${nameParam}${cityParam ? ' (' + cityParam + ')' : ''}`;
+    }
 
     document.getElementById('bookingForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       const btn = document.getElementById('b-submit');
+      const bookingType = document.getElementById('b-type').value;
 
       const name = document.getElementById('b-name').value.trim();
       const email = document.getElementById('b-email').value.trim();
       const phone = document.getElementById('b-phone').value.trim();
-      const service = document.getElementById('b-service').value;
+      const city = document.getElementById('b-city').value.trim();
       const date = document.getElementById('b-date').value;
       const message = document.getElementById('b-message').value.trim();
 
@@ -96,9 +426,67 @@
 
       setLoading(btn, true);
       try {
-        await bookService({ name, email, phone, service, date, message });
-        showToast('Booking submitted successfully! We\'ll be in touch soon.', 'success');
+        if (bookingType === 'package') {
+          const pkgSelect = document.getElementById('pkg-select');
+          const opt = pkgSelect.options[pkgSelect.selectedIndex];
+          const packageName = opt.dataset.name;
+          const packageDuration = opt.dataset.duration;
+          const packagePricePerPerson = parseFloat(opt.dataset.price) || 0;
+          const travelersCount = parseInt(document.getElementById('pkg-travelers').value, 10) || 1;
+          const roomPreference = document.getElementById('pkg-room-pref').value;
+          const totalPrice = packagePricePerPerson * travelersCount;
+
+          await packageBookService({
+            name,
+            email,
+            phone,
+            city,
+            date,
+            message,
+            bookingType: 'package',
+            service: packageName,
+            packageName,
+            packageDuration,
+            packagePricePerPerson,
+            travelersCount,
+            totalPrice,
+            roomPreference
+          });
+
+          showToast(`🎉 Tour Package "${packageName}" booked for ${travelersCount} travelers! Booking reference sent to ${email}.`, 'success', 6000);
+        } else if (bookingType === 'bulk') {
+          const service = document.getElementById('b-service').value;
+          const endDate = document.getElementById('b-end-date').value;
+          const organization = document.getElementById('b-org').value.trim();
+          const groupSize = parseInt(document.getElementById('b-group-size').value, 10) || 5;
+          const roomsOrGuidesCount = parseInt(document.getElementById('b-rooms-guides').value, 10) || 1;
+          const estimatedBudget = document.getElementById('b-budget').value.trim();
+
+          await bulkBookService({
+            name,
+            email,
+            phone,
+            city,
+            service,
+            date,
+            endDate,
+            message,
+            bookingType: 'bulk',
+            groupSize,
+            organization,
+            roomsOrGuidesCount,
+            estimatedBudget
+          });
+
+          showToast(`Group booking request for ${groupSize} guests submitted! Our group concierge will contact you within 24 hours.`, 'success', 6000);
+        } else {
+          const service = document.getElementById('b-service').value;
+          await bookService({ name, email, phone, city, service, date, message, bookingType: 'single' });
+          showToast("Booking submitted successfully! We'll be in touch soon.", 'success');
+        }
+
         document.getElementById('bookingForm').reset();
+        window.setBookingMode(bookingType);
       } catch (err) {
         showToast(err.message || 'Failed to submit booking', 'error');
       } finally {
@@ -109,4 +497,3 @@
   <script src="script.js"></script>
 </body>
 </html>
-
